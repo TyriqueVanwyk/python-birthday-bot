@@ -37,27 +37,29 @@ def menu():
 
 	userChoice = input()
 	return userChoice
+##This function is to make the process of the 'Add new birthday menu' usable in other files
+def menuNewBirthday():
+	newBday = True
+	addBirthday()
+	while newBday:
+		print("Do you wish to continue? ('y' for yes and 'n' for no and type '0' to exit)")
+		userinput = input()
+		if userinput.upper() == "Y":
+			newBday = True
+		elif userinput.upper() == "N":
+			newBday = False
+			exit
+		elif userinput.upper()=="0":
+			newBday = False
+			menu()
+			exit
 
 ## use the menu
 try:
 	userChoice = menu()
 	if userChoice == "1":
-		##Add a New Birthday to the textfile
-		newBday = True
-		addBirthday()
-		while newBday:
-			print("Do you wish to continue? ('y' for yes and 'n' for no and type '0' to exit)")
-			userinput = input()
-			if userinput.upper() == "Y":
-				newBday = True
-			elif userinput.upper() == "N":
-				newBday = False
-				exit
-			elif userinput.upper()=="0":
-				newBday = False
-				menu()
-				exit
-
+		##call the function to execute the menu
+		menuNewBirthday()
 
 	elif userChoice == "0":
 		exit
