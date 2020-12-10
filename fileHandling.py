@@ -8,18 +8,15 @@ def addBirthday():
 	print("Person contact Name:")
 	contactName = input()
 	#Check if the user wants to quit
-	if contactName == "0":
-		sys.exit()
+	if contactName == "0": sys.exit()
 	print("Contact number:")
 	contactNumber = input()
 	#Check if the user wants to quit
-	if contactNumber == "0":
-		sys.exit()
+	if contactNumber == "0": sys.exit()
 	print("Contact birth date (mm/dd format):")
 	contactBirthday = input() ## mm/dd format
 	#Check if the user wants to quit
-	if contactBirthday== "0":
-		sys.exit()
+	if contactBirthday== "0":sys.exit()
 
 	##Creates a new file if the file does not exist and if the file does exist it appends the file
 	f = open("Birthdays.txt", "a")
