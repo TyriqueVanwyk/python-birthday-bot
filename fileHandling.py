@@ -1,5 +1,5 @@
 import sys
-
+import json
 def addBirthday():
 	print("")
 	print("----------------------------------------------------------------------------------------------------------------------------------------------")
@@ -19,9 +19,15 @@ def addBirthday():
 	if contactBirthday== "0":sys.exit()
 
 	##Creates a new file if the file does not exist and if the file does exist it appends the file
-	f = open("Birthdays.txt", "a")
-	f.write("{name}#{birthday}#{number}\n".format(name=contactName, birthday=contactBirthday, number=contactNumber))	
-	f.close
+	data = {}
+	data['people'] = []
+	data['people'].append({
+		'name' : contactName,
+		'number' : contactNumber,
+		'birthdate' : contactBirthday,
+	})
+	with open("Birthdays.txt", "a") as outfile:
+		 json.dump(data, outfile)
 
 def menu():
 	print("-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
