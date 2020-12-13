@@ -17,8 +17,7 @@ def addBirthday():
 	contactBirthday = input() ## mm/dd format
 	#Check if the user wants to quit
 	if contactBirthday== "0":sys.exit()
-
-	##Creates a new file if the file does not exist and if the file does exist it appends the file
+	#Creates format for json file
 	data = {}
 	data['people'] = []
 	data['people'].append({
@@ -26,6 +25,7 @@ def addBirthday():
 		'number' : contactNumber,
 		'birthdate' : contactBirthday,
 	})
+	##Creates a new file if the file does not exist and if the file does exist dumps all the json info into the file
 	with open("Birthdays.txt", "a") as outfile:
 		 json.dump(data, outfile)
 
