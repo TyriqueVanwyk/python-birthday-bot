@@ -40,6 +40,7 @@ def menu():
 
 	userChoice = input()
 	return userChoice
+
 ##This function is to make the process of the 'Add new birthday menu' usable in other files
 def menuNewBirthday():
 	newBday = True
@@ -56,6 +57,12 @@ def menuNewBirthday():
 			newBday = False
 			menu()
 			exit
+
+###Reading from file using method
+def readContacts(filename):
+    with open(filename, "a") as f:
+        data = json.load(f)
+    return data
 
 ## use the menu
 try:
