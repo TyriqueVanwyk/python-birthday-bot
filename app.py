@@ -54,11 +54,12 @@ input("Scan the QR code and then press Enter")
 # Keep a nice gap between successive messages
 # Use Keys.SHIFT + Keys.ENTER to give a new line effect in your Message
 msgToSend = [
-                [12, 32, 0, "Hello! This is test Msg. Please Ignore." + Keys.SHIFT + Keys.ENTER + "http://bit.ly/mogjm05"]
-            ]
+                [13,5, 0, "Hello! This is test Msg. Please Ignore." + Keys.SHIFT + Keys.ENTER + "http://bit.ly/mogjm05"]
+                ]
 
-# Count variable to identify the number of messages to be sent
+# Count variable to identify the number of messages to be sen
 count = 0
+
 while count<len(msgToSend):
 
     # Identify time
@@ -82,7 +83,7 @@ while count<len(msgToSend):
                 # Select the target
                 x_arg = '//span[contains(@title,' + target + ')]'
                 try:
-                    wait5.until(EC.presence_of_element_located((
+                    wait5index.until(EC.presence_of_element_located((
                         By.XPATH, x_arg
                     )))
                 except:
@@ -115,7 +116,7 @@ while count<len(msgToSend):
 
                 # Send message
                 # target is your target Name and msgToSend is you message
-                input_box.send_keys("Hello, " + target + "."+ Keys.SHIFT + Keys.ENTER + msgToSend[count][3] + Keys.SPACE) # + Keys.ENTER (Uncomment it if your msg doesnt contain '\n')
+                input_box.send_keys("Hello, " + target + "."+ Keys.SHIFT + Keys.ENTER + msgToSend[count][3] + Keys.SPACE + Keys.ENTER) #(Uncomment it if your msg doesnt contain '\n')
                 # Link Preview Time, Reduce this time, if internet connection is Good
                 time.sleep(10)
                 input_box.send_keys(Keys.ENTER)
@@ -135,3 +136,16 @@ while count<len(msgToSend):
         print('\n\n')
         count+=1
 driver.quit()
+
+
+def FindTarget():
+    # select target
+    driver.find_element_by_xpath(x_arg).click()
+    print("Target Successfully Selected")
+    time.sleep(2)
+
+    # Select the Input Box
+    inp_xpath = "//div[@contenteditable='true']"
+    input_box = wait.until(EC.presence_of_element_located((
+        By.XPATH, inp_xpath)))
+    time.sleep(1)
