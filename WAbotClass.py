@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import sys
+import time
 
 #import required packages
 from selenium import webdriver
@@ -7,96 +9,80 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import datetime
-import calendar
-import time
-import openpyxl as excel
 
-#driver to open site
-driver = webdriver.Firefox()
+Firefox_browser = webdriver.Firefox()  # Change the path as per your local dir.
+Firefox_browser.get('https://web.whatsapp.com/')
+#This is a function that will send a message
+def clickSendButton():
+    # Click on send button
+    btn_xpath = '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div[3]/button'
+    message_box = Firefox_browser.find_element_by_xpath(btn_xpath)
+    message_box.click()
 
-# liink to oopen a site
-driver.get("https://web.whatsapp.com")
-
-# 10 sec wait time to load, if good internet connection is not good then increase the time
-# units in seconds
-# note this time is being used below also
-wait = WebDriverWait(driver, 10)
-wait5 = WebDriverWait(driver, 5)
-input("Scan the QR code and then press Enter")
-
-
-wait = WebDriverWait(driver, 10)
-wait5 = WebDriverWait(driver, 5)
-input("Scan the QR code and then press Enter")
-
-#Send message
-def sendMessage(msgToSend, targetName):
-    count = 0
-    while count<len(msgToSend):
-        #identitify time
-        curTime = datetime.datetime.now()
-        curHour = curTime.time().hour
-        curMin = curTime.time().minute
-        curSec = curTime.time().second
-        
-        #Todays date
-        curDate = datetime.datetime.date().today()
-        curDay = curDate.day()
-        curMonth = curDate.month()
-        
-        #checks the current time
-        if msgToSend[count][0] == curHour and  msgToSend[count][1] == curMin and msgToSend[count][2] == curSec:
-            # utility variables to tract count of success and fails
-            success = 0
-            sNo = 1
-            failList = []
-
-            #itterate over selected contacts
-            try:
-                # Select the target
-                x_arg = '//span[contains(@title,' + targetName +')]'
-                try:
-                    wait5index.until(EC.presence_of_element_located(By.XPATH,x_arg)))
-                except :
-                    SearchTarget(targetName)   
-                
-                #Select the target
-                driver.find_element_by_xpath(x_arg).click()
-                print("Target successfully selected")
-                time.sleep(2)
-
-                #select the inputbox
-                inp_xpath = "//div[@contenteditable='true']"
-                input_box = wait.until(EC.presence_of_element_located((By.XPATH, inp_xpath)))
-                time.sleep(1)
-                
-                #Send Message
-                # target is your target Name and msgToSend is your message
-
-                input_box.send_keys("Hello, " + targetName + "." + Keys.SHIFT + Keys.ENTER + msgToSend[count][3] + Keys.SPACE + Keys.ENTER)
-
-                # Link preview time, reduce this time, if internet connection is good
-
-                time.sleep(10)
-                input_box.send_keys(Keys.ENTER)
-                print("Successfully send message to:" + targetName + '/n')
-                success+=1
-                time.sleep(0.5)
-
-
-def SearchTarget(targetName):
-     # If contact is not found then search for it
-    searchBoxPath = '//*[@id="input-chatlist-search]"'
-    wait5.until(EC.presence_of_element_located((By.ID, "input-chatlist-search")))
-    inputSearchBox = driver.find_element_by_id("inpyt-chatlist-search")
-    time.sleep(0.5)
-    # click the search button
-    driver.find_element_by_xpath('html/body/div/div/div/div[2]/div/div[2]/div/button').click()
+def sendMessage(targetName, msgToSend):
+    # Typing message into message box
+    wait = WebDriverWait(Firefox_browser, 10)
+    wait5 = WebDriverWait(Firefox_browser, 5)
+    inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div[2]/div/div[2]"
+    input_box = wait.until(EC.presence_of_element_located((By.XPATH, inp_xpath)))
     time.sleep(1)
-    inputSearchBox.clear()
-    inputSearchBox.send_keys(targetName[1:len(targetName)-1])
-    print('Target Searched')
-    
-    # Increase the time if searching a contact is taking too long
-    time.sleep(4)
-    
+                
+    input_box.send_keys(msgToSend)
+    clickSendButton()
+
+# Function for getting user from
+def new_chat(targetName):
+    # Selecting the new chat search textbox
+    new_chat = Firefox_browser.find_element_by_xpath('//div[@class="ZP8RM"]')
+    new_chat.click()
+
+    # Enter the name of chat
+    new_user =Firefox_browser.find_element_by_xpath('//div[@class="_3u328 copyable-text selectable-text"]')
+    new_user.send_keys(user_name)
+
+    time.sleep(1)
+
+    try:
+        # Select for the title having user name
+        user = Firefox_browser.find_element_by_xpath('//span[@title="{}"]'.format(user_name))
+        user.click()
+    except NoSuchElementException:
+        print('Given user "{}" not found in the contact list'.format(user_name))
+    except Exception as e:
+        # Close the browser
+        Firefox_browser.close()
+        print(e)
+        sys.exit()
+
+def findContact(targetName):
+    try:
+        # Select for the title having user name
+        user = Firefox_browser.find_element_by_xpath('//span[@title="{}"]'.format(targetName))
+        user.click()
+    except NoSuchElementException as se:
+        new_chat(targetName)
+
+        
+if __name__ == '__main__':
+
+    options = webdriver.FirefoxOptions()
+    options.add_argument('--user-data-dir=<User Data Path>')
+    options.add_argument('--profile-directory=Default')
+
+    # Register the drive
+    #Firefox_browser = webdriver.Firefox()  # Change the path as per your local dir.
+    #Firefox_browser.get('https://web.whatsapp.com/')
+
+    # Sleep to scan the QR Code
+    time.sleep(15)
+
+    user_name_list = ['Jade']
+
+    for user_name in user_name_list:
+
+        findContact(user_name)
+        msgToSend = 'The whatsapp bot worked!'
+        sendMessage(user_name, msgToSend)
+    Firefox_browser.close()
+
+
