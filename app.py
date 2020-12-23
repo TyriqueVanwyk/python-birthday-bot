@@ -10,19 +10,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import datetime
 import time
-import openpyxl as excel
+
 
 # function to read contacts from a text file
-def readContacts(fileName):
-    lst = []
-    file = excel.load_workbook(fileName)
-    sheet = file.active
-    firstCol = sheet['A']
-    for cell in range(len(firstCol)):
-        contact = str(firstCol[cell].value)
-        contact = "\"" + contact + "\""
-        lst.append(contact)
-    return lst
 
 # Target Contacts, keep them in double colons
 # Not tested on Broadcast
@@ -54,7 +44,7 @@ input("Scan the QR code and then press Enter")
 # Keep a nice gap between successive messages
 # Use Keys.SHIFT + Keys.ENTER to give a new line effect in your Message
 msgToSend = [
-                [13,5, 0, "Hello! This is test Msg. Please Ignore." + Keys.SHIFT + Keys.ENTER + "http://bit.ly/mogjm05"]
+                [19,31, 0, "Hello! This is test Msg. Please Ignore." + Keys.SHIFT + Keys.ENTER + "http://bit.ly/mogjm05"]
                 ]
 
 # Count variable to identify the number of messages to be sen
